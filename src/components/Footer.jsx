@@ -1,5 +1,4 @@
 import { useLang } from '../context/LanguageContext';
-import OulfLogo from './OulfLogo';
 import { buildWA } from '../data/products';
 import './Footer.css';
 
@@ -36,7 +35,14 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__top">
         <div className="footer__brand">
-          <OulfLogo size={44} />
+          <img
+            src="/logo.jpg"
+            alt="Logo Oulf"
+            className="footer__logo-img"
+            width="64"
+            height="64"
+            loading="lazy"
+          />
           <div className="footer__brand-name">
             <span className="footer__wordmark">Oulf</span>
             <span className="footer__arabic">أُلف</span>
