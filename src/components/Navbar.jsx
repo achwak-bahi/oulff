@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
-import OulfLogo from './OulfLogo';
 import { buildWA } from '../data/products';
 import './Navbar.css';
 
@@ -45,7 +44,14 @@ export default function Navbar() {
     <header className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
       <nav className="navbar__inner" role="navigation" aria-label="Navigation principale">
         <a href="#home" className="navbar__brand" aria-label="Oulf - Accueil">
-          <OulfLogo size={36} />
+          <img
+            src="/logo.jpg"
+            alt="Logo Oulf"
+            className="navbar__logo-img"
+            width="44"
+            height="44"
+            loading="eager"
+          />
           <span className="navbar__wordmark">Oulf</span>
           <span className="navbar__arabic">أُلف</span>
         </a>
