@@ -64,13 +64,13 @@ export default function HeroSection() {
         <div className="hero__visual">
           <div className="hero__img-wrap">
             <img
-              src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&q=80"
+              src="/hero.jpg"
               alt="Douceurs artisanales Oulf"
               width="600" height="700"
               loading="eager" decoding="async"
             />
             <div className="hero__img-tag">
-              <span>✦</span>
+              <span>❆</span>
               Oulf · أُلف
             </div>
           </div>
