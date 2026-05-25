@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { useCart } from '../context/CartContext';
 import { getProducts } from '../api/index.js';
 import { products as staticProducts } from '../data/products.js';
 import './ProductsSection.css';
 
-// Fallback statique en attendant que le backend soit disponible
+const PRODUCT_LABELS = {
+  p1_name: { fr: 'Tartelette', ar: 'تارتليت' },
+  p2_name: { fr: 'Cupcake', ar: 'كاب كيك' },
+  p3_name: { fr: 'Brownies', ar: 'براونيز' },
+  p1_desc: { fr: "Pâte sablée croustillante garnie d'une crème onctueuse, faite avec amour", ar: 'عجينة مقرمشة مع كريمة ناعمة، محضّرة بحب' },
+  p2_desc: { fr: "Moelleux irrésistible surmonté d'un topping crémeux et décoré à la main", ar: 'إسفنجي لا يقاوم مع توبينغ كريمي ومزيّن يدوياً' },
+  p3_desc: { fr: 'Intense en chocolat, fondant au cœur avec une croûte légèrement croustillante', ar: 'كثيف بالشوكولاتة، طري من الداخل مع قشرة مقرمشة' },
+};
+
 const STATIC_PRODUCTS = staticProducts.map(p => ({
   id: p.id,
   name_fr: p.nameKey,
@@ -15,26 +22,14 @@ const STATIC_PRODUCTS = staticProducts.map(p => ({
   price: p.price,
   image_url: p.img,
   is_available: true,
-  _static: true, // flag pour savoir si c'est un fallback
+  _static: true,
 }));
-
-// Traductions directes pour les produits statiques
-const PRODUCT_LABELS = {
-  p1_name: { fr: 'Tartelette', ar: 'تارتليت' },
-  p2_name: { fr: 'Cupcake', ar: 'كاب كيك' },
-  p3_name: { fr: 'Brownies', ar: 'براونيز' },
-  p1_desc: { fr: "Pâte sablée croustillante garnie d'une crème onctueuse, faite avec amour", ar: 'عجينة مقرمشة مع كريمة ناعمة، محضّرة بحب' },
-  p2_desc: { fr: 'Moelleux irrésistible surmonté d\'un topping crémeux et décoré à la main', ar: 'إسفنجي لا يقاوم مع توبينغ كريمي ومزيّن يدوياً' },
-  p3_desc: { fr: 'Intense en chocolat, fondant au cœur avec une croûte légèrement croustillante', ar: 'كثيف بالشوكولاتة، طري من الداخل مع قشرة مقرمشة' },
-};
 
 export default function ProductsSection() {
   const { t, lang } = useLanguage();
-  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [usingFallback, setUsingFallback] = useState(false);
-  const [addedId, setAddedId] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getProducts()
@@ -43,34 +38,19 @@ export default function ProductsSection() {
         setLoading(false);
       })
       .catch(() => {
-        // Fallback silencieux sur les produits statiques
         setProducts(STATIC_PRODUCTS);
-        setUsingFallback(true);
         setLoading(false);
       });
   }, []);
 
   const getProductName = (product) => {
-    if (product._static) {
-      return PRODUCT_LABELS[product.name_fr]?.[lang] ?? product.name_fr;
-    }
+    if (product._static) return PRODUCT_LABELS[product.name_fr]?.[lang] ?? product.name_fr;
     return lang === 'ar' ? product.name_ar : product.name_fr;
   };
 
   const getProductDesc = (product) => {
-    if (product._static) {
-      return PRODUCT_LABELS[product.description_fr]?.[lang] ?? product.description_fr;
-    }
+    if (product._static) return PRODUCT_LABELS[product.description_fr]?.[lang] ?? product.description_fr;
     return lang === 'ar' ? product.description_ar : product.description_fr;
-  };
-
-  const handleAddToCart = (product) => {
-    addToCart({
-      ...product,
-      name_fr: getProductName(product),
-    });
-    setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1500);
   };
 
   const handleWhatsApp = (product) => {
@@ -102,7 +82,14 @@ export default function ProductsSection() {
           </div>
         )}
 
-        {!loading && (
+        {error && (
+          <div className="products-error">
+            <span>⚠️</span>
+            <p>{t('products.error') || 'Impossible de charger les produits. Vérifiez que le serveur est démarré.'}</p>
+          </div>
+        )}
+
+        {!loading && !error && (
           <div className="products-grid">
             {products.map(product => (
               <div key={product.id} className="product-card">
@@ -125,22 +112,15 @@ export default function ProductsSection() {
 
                 <div className="product-info">
                   <h3 className="product-name">{getProductName(product)}</h3>
-                  <p className="product-desc">{getProductDesc(product)}</p>
+                  {(product.description_fr || product._static) && (
+                    <p className="product-desc">{getProductDesc(product)}</p>
+                  )}
                   <div className="product-price">
                     {product.price?.toLocaleString()} <span>DA</span>
                   </div>
                 </div>
 
                 <div className="product-actions">
-                  <button
-                    className={`btn-add-cart ${addedId === product.id ? 'added' : ''}`}
-                    onClick={() => handleAddToCart(product)}
-                    disabled={product.is_available === false}
-                  >
-                    {addedId === product.id
-                      ? (lang === 'ar' ? '✓ أضيف' : '✓ Ajouté')
-                      : (lang === 'ar' ? 'أضف للسلة' : 'Ajouter au panier')}
-                  </button>
                   <button
                     className="btn-whatsapp"
                     onClick={() => handleWhatsApp(product)}
