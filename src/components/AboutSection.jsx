@@ -1,11 +1,18 @@
 import { useLang } from '../context/LanguageContext';
 import './AboutSection.css';
 
+const VALUES = [
+  { icon: '🫶', key: 'about_val1' },
+  { icon: '✨', key: 'about_val2' },
+  { icon: '🏡', key: 'about_val3' },
+];
+
 export default function AboutSection() {
   const { t } = useLang();
   return (
     <section id="about" className="about">
       <div className="about__container">
+
         <div className="about__visual">
           <div className="about__img-frame">
             <img
@@ -40,12 +47,23 @@ export default function AboutSection() {
           </h2>
           <p className="about__p">{t('about_p1')}</p>
           <p className="about__p">{t('about_p2')}</p>
+
+          <div className="about__values">
+            {VALUES.map(v => (
+              <div key={v.key} className="about__value">
+                <span className="about__value-icon">{v.icon}</span>
+                <span className="about__value-text">{t(v.key)}</span>
+              </div>
+            ))}
+          </div>
+
           <div className="about__signature">
             <span className="about__sig-text">Oulf · أُلف</span>
             <div className="about__sig-line" />
             <span className="about__sig-sub">Relizane</span>
           </div>
         </div>
+
       </div>
     </section>
   );
