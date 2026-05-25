@@ -1,19 +1,25 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
 import os
+import pathlib
 
-# Force le chemin vers le .env dans le même dossier que ce fichier
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+# Lecture manuelle du .env en UTF-8 pour éviter les problèmes d'encodage Windows
+_env_path = pathlib.Path(__file__).parent / ".env"
+if _env_path.exists():
+    with open(_env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, value = line.partition("=")
+                os.environ.setdefault(key.strip(), value.strip())
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if DATABASE_URL is None:
+if not DATABASE_URL:
     raise RuntimeError(
         "DATABASE_URL est introuvable. "
-        "Assurez-vous que le fichier backend/.env existe et contient DATABASE_URL. "
-        "Copiez backend/.env.example vers backend/.env et remplissez les valeurs."
+        "Assurez-vous que backend/.env existe et contient DATABASE_URL."
     )
 
 engine = create_engine(DATABASE_URL)
