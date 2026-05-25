@@ -3,7 +3,7 @@ import { useLang } from '../context/LanguageContext';
 import './ContactPage.css';
 
 const WA_NUMBER = '213668545371';
-const EMAIL = 'oulf.patisserie@gmail.com';
+const EMAIL = 'oulf2007@gmail.com;
 
 export default function ContactPage({ onClose }) {
   const { t } = useLang();
