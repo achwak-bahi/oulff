@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-from routers import products, orders, auth
+from routers import products, orders
 
 app = FastAPI(
     title="Oulf API",
@@ -29,7 +29,6 @@ app.add_middleware(
 # ─── Routers ─────────────────────────────────────────────
 app.include_router(products.router)
 app.include_router(orders.router)
-app.include_router(auth.router)
 
 
 @app.get("/")

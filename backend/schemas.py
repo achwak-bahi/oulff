@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
@@ -78,27 +78,3 @@ class OrderOut(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-# ─── Auth Admin ─────────────────────────────────────────
-class AdminCreate(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class AdminOut(BaseModel):
-    id: int
-    email: str
-    is_active: bool
-
-    class Config:
-        from_attributes = True
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-    email: Optional[str] = None
