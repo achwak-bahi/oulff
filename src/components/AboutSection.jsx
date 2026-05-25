@@ -2,7 +2,7 @@ import { useLang } from '../context/LanguageContext';
 import './AboutSection.css';
 
 const VALUES = [
-  { icon: '🥶', key: 'about_val1' },
+  { icon: '🌿', key: 'about_val1' },
   { icon: '✨', key: 'about_val2' },
   { icon: '🏡', key: 'about_val3' },
 ];
