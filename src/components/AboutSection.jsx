@@ -16,7 +16,7 @@ export default function AboutSection() {
         <div className="about__visual">
           <div className="about__img-frame">
             <img
-              src="https://images.unsplash.com/photo-1612203985729-70726954388c?w=700&q=80"
+              src="/about.jpg"
               alt="Pâtisserie artisanale Oulf"
               width="500" height="600"
               loading="lazy" decoding="async"
