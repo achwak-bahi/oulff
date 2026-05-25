@@ -7,6 +7,7 @@ import AboutSection from './components/AboutSection';
 import DeliverySection from './components/DeliverySection';
 import Footer from './components/Footer';
 import ContactPage from './components/ContactPage';
+import FloatingCTA from './components/FloatingCTA';
 
 export default function App() {
   const [contactOpen, setContactOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function App() {
         <DeliverySection />
       </main>
       <Footer />
+      <FloatingCTA onContactOpen={() => setContactOpen(true)} />
       {contactOpen && (
         <ContactPage onClose={() => setContactOpen(false)} />
       )}
