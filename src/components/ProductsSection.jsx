@@ -13,18 +13,6 @@ const PRODUCT_LABELS = {
   p3_desc: { fr: 'Intense en chocolat, fondant au cœur avec une croûte légèrement croustillante', ar: 'كثيف بالشوكولاتة، طري من الداخل مع قشرة مقرمشة' },
 };
 
-const STATIC_PRODUCTS = staticProducts.map(p => ({
-  id: p.id,
-  name_fr: p.nameKey,
-  name_ar: p.nameKey,
-  description_fr: p.descKey,
-  description_ar: p.descKey,
-  price: p.price,
-  image_url: p.img,
-  is_available: true,
-  _static: true,
-}));
-
 export default function ProductsSection() {
   const { t, lang } = useLanguage();
   const [products, setProducts] = useState([]);
@@ -38,7 +26,19 @@ export default function ProductsSection() {
         setLoading(false);
       })
       .catch(() => {
-        setProducts(STATIC_PRODUCTS);
+        // Fallback : construire ici pour s'assurer que staticProducts est bien chargé
+        const fallback = staticProducts.map(p => ({
+          id: p.id,
+          name_fr: p.nameKey,
+          name_ar: p.nameKey,
+          description_fr: p.descKey,
+          description_ar: p.descKey,
+          price: p.price,
+          image_url: p.img,
+          is_available: true,
+          _static: true,
+        }));
+        setProducts(fallback);
         setLoading(false);
       });
   }, []);
