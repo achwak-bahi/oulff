@@ -37,7 +37,6 @@ export function CartProvider({ children }) {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  // Générer le message WhatsApp
   const buildWhatsAppMessage = (customerName = '') => {
     const lines = cart.map(
       item => `• ${item.name_fr} x${item.quantity} = ${(item.price * item.quantity).toLocaleString()} DA`
@@ -57,7 +56,6 @@ export function CartProvider({ children }) {
     window.open(`https://wa.me/213668545371?text=${message}`, '_blank');
   };
 
-  // Enregistrer la commande dans la base de données
   const submitOrder = async (customerInfo) => {
     if (cart.length === 0) return;
     setOrderLoading(true);

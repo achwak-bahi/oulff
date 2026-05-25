@@ -15,10 +15,9 @@ export const translations = {
     hero_stat3_val:'3', hero_stat3_label:'Ans de passion',
     products_title:'Nos Créations', products_subtitle:'Tartelettes, cupcakes et en-cas salés — préparés à la main avec les meilleurs ingrédients',
     products_cta:'Commander', badge_popular:'Populaire', badge_new:'Nouveau', badge_limited:'Édition Limitée',
-    p1_name:'	Tartelette', p1_desc:"Pâte sablée croustillante garnie d'une crème onctueuse, faite avec amour",
+    p1_name:'Tartelette', p1_desc:"Pâte sablée croustillante garnie d'une crème onctueuse, faite avec amour",
     p2_name:'Cupcake', p2_desc:"Moelleux irrésistible surmonté d'un topping crémeux et décoré à la main",
     p3_name:'Brownies', p3_desc:"Intense en chocolat, fondant au cœur avec une croûte légèrement croustillante",
-    
     p4_name:'Makrout au Miel', p4_desc:'Pâtisserie algérienne fourrée aux dattes et trempée dans le miel pur',
     p5_name:'Cake Marbré Chocolat', p5_desc:'Mini-cake marbré vanille-chocolat avec ganache onctueuse',
     p6_name:'Ghribia aux Noix', p6_desc:'Sablés orientaux fondants aux noix, recette traditionnelle de Relizane',
@@ -39,6 +38,9 @@ export const translations = {
     footer_rights:'© 2025 Oulf. Tous droits réservés.',
     wa_general:'Bonjour Oulf ! Je souhaite passer une commande.',
     wa_product:'Bonjour Oulf ! Je souhaite commander : ',
+    'products.title': 'Nos Créations',
+    'products.subtitle': 'Tartelettes, cupcakes et en-cas salés — préparés à la main',
+    'products.error': 'Impossible de charger les produits. Vérifiez que le serveur est démarré.',
   },
   ar: {
     nav_home:'الرئيسية', nav_products:'المنتجات', nav_about:'من نحن',
@@ -55,7 +57,6 @@ export const translations = {
     p1_name:'تارتليت', p1_desc:'عجينة مقرمشة مع كريمة ناعمة، محضّرة بحب',
     p2_name:'كاب كيك', p2_desc:'إسفنجي لا يقاوم مع توبينغ كريمي ومزيّن يدوياً',
     p3_name:'براونيز', p3_desc:'كثيف بالشوكولاتة، طري من الداخل مع قشرة مقرمشة',
-    
     p4_name:'مقروط بالعسل', p4_desc:'حلوى جزائرية تقليدية محشوة بالتمر ومنقوعة في العسل الطبيعي',
     p5_name:'كيك رخامي شوكولاتة', p5_desc:'ميني كيك رخامي فانيليا-شوكولاتة مع غاناش كريمي',
     p6_name:'غريبية بالجوز', p6_desc:'بسكويت شرقي بالجوز، وصفة تقليدية من غليزان',
@@ -76,6 +77,9 @@ export const translations = {
     footer_rights:'© 2025 أُلف. جميع الحقوق محفوظة.',
     wa_general:'مرحباً أُلف ! أريد تقديم طلب.',
     wa_product:'مرحباً أُلف ! أريد الطلب: ',
+    'products.title': 'إبداعاتنا',
+    'products.subtitle': 'تارتليت، كابكيك ومقبلات مالحة — مصنوعة يدوياً',
+    'products.error': 'تعذّر تحميل المنتجات. تأكد من تشغيل الخادم.',
   }
 };
 
@@ -92,3 +96,4 @@ export function LanguageProvider({ children }) {
 }
 
 export const useLang = () => useContext(LanguageContext);
+export const useLanguage = () => useContext(LanguageContext);
