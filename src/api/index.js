@@ -14,6 +14,42 @@ export async function getProductById(id) {
   return res.json();
 }
 
+export async function getAllProducts(token) {
+  const res = await fetch(`${API_BASE}/api/products/all`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Erreur lors du chargement des produits');
+  return res.json();
+}
+
+export async function createProduct(token, data) {
+  const res = await fetch(`${API_BASE}/api/products/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Erreur lors de la création du produit');
+  return res.json();
+}
+
+export async function updateProduct(token, id, data) {
+  const res = await fetch(`${API_BASE}/api/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Erreur lors de la modification du produit');
+  return res.json();
+}
+
+export async function deleteProduct(token, id) {
+  const res = await fetch(`${API_BASE}/api/products/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Erreur lors de la suppression du produit');
+}
+
 // ─── Commandes ──────────────────────────────────────────────
 export async function createOrder(orderData) {
   const res = await fetch(`${API_BASE}/api/orders/`, {
