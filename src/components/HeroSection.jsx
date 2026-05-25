@@ -28,7 +28,6 @@ export default function HeroSection({ onContactOpen }) {
           <p className="hero__subtitle">{t('hero_subtitle')}</p>
 
           <div className="hero__actions">
-            {/* Bouton principal → ouvre la page Contact */}
             <button
               className="hero__cta-primary"
               onClick={() => onContactOpen?.()}
@@ -45,15 +44,6 @@ export default function HeroSection({ onContactOpen }) {
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-          </div>
-
-          <div className="hero__stats">
-            {['hero_stat1', 'hero_stat2', 'hero_stat3'].map((k, i) => (
-              <div key={i} className="hero__stat">
-                <span className="hero__stat-val">{t(k + '_val')}</span>
-                <span className="hero__stat-label">{t(k + '_label')}</span>
-              </div>
-            ))}
           </div>
         </div>
 
