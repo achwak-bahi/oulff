@@ -2,7 +2,7 @@ import { useLang } from '../context/LanguageContext';
 import './AboutSection.css';
 
 const VALUES = [
-  { icon: '🫶', key: 'about_val1' },
+  { icon: '🥶', key: 'about_val1' },
   { icon: '✨', key: 'about_val2' },
   { icon: '🏡', key: 'about_val3' },
 ];
@@ -21,22 +21,6 @@ export default function AboutSection() {
               width="500" height="600"
               loading="lazy" decoding="async"
             />
-          </div>
-          <div className="about__stats-card">
-            <div className="about__stat">
-              <span className="about__stat-n">{t('about_s1_val')}</span>
-              <span>{t('about_s1_label')}</span>
-            </div>
-            <div className="about__stat-sep" />
-            <div className="about__stat">
-              <span className="about__stat-n">{t('about_s2_val')}</span>
-              <span>{t('about_s2_label')}</span>
-            </div>
-            <div className="about__stat-sep" />
-            <div className="about__stat">
-              <span className="about__stat-n">{t('about_s3_val')}</span>
-              <span>{t('about_s3_label')}</span>
-            </div>
           </div>
         </div>
 
