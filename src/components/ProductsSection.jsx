@@ -2,14 +2,38 @@ import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { getProducts } from '../api/index.js';
+import { products as staticProducts } from '../data/products.js';
 import './ProductsSection.css';
+
+// Fallback statique en attendant que le backend soit disponible
+const STATIC_PRODUCTS = staticProducts.map(p => ({
+  id: p.id,
+  name_fr: p.nameKey,
+  name_ar: p.nameKey,
+  description_fr: p.descKey,
+  description_ar: p.descKey,
+  price: p.price,
+  image_url: p.img,
+  is_available: true,
+  _static: true, // flag pour savoir si c'est un fallback
+}));
+
+// Traductions directes pour les produits statiques
+const PRODUCT_LABELS = {
+  p1_name: { fr: 'Tartelette', ar: 'تارتليت' },
+  p2_name: { fr: 'Cupcake', ar: 'كاب كيك' },
+  p3_name: { fr: 'Brownies', ar: 'براونيز' },
+  p1_desc: { fr: "Pâte sablée croustillante garnie d'une crème onctueuse, faite avec amour", ar: 'عجينة مقرمشة مع كريمة ناعمة، محضّرة بحب' },
+  p2_desc: { fr: 'Moelleux irrésistible surmonté d\'un topping crémeux et décoré à la main', ar: 'إسفنجي لا يقاوم مع توبينغ كريمي ومزيّن يدوياً' },
+  p3_desc: { fr: 'Intense en chocolat, fondant au cœur avec une croûte légèrement croustillante', ar: 'كثيف بالشوكولاتة، طري من الداخل مع قشرة مقرمشة' },
+};
 
 export default function ProductsSection() {
   const { t, lang } = useLanguage();
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [addedId, setAddedId] = useState(null);
 
   useEffect(() => {
@@ -18,21 +42,39 @@ export default function ProductsSection() {
         setProducts(data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error(err);
-        setError(true);
+      .catch(() => {
+        // Fallback silencieux sur les produits statiques
+        setProducts(STATIC_PRODUCTS);
+        setUsingFallback(true);
         setLoading(false);
       });
   }, []);
 
+  const getProductName = (product) => {
+    if (product._static) {
+      return PRODUCT_LABELS[product.name_fr]?.[lang] ?? product.name_fr;
+    }
+    return lang === 'ar' ? product.name_ar : product.name_fr;
+  };
+
+  const getProductDesc = (product) => {
+    if (product._static) {
+      return PRODUCT_LABELS[product.description_fr]?.[lang] ?? product.description_fr;
+    }
+    return lang === 'ar' ? product.description_ar : product.description_fr;
+  };
+
   const handleAddToCart = (product) => {
-    addToCart(product);
+    addToCart({
+      ...product,
+      name_fr: getProductName(product),
+    });
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1500);
   };
 
   const handleWhatsApp = (product) => {
-    const name = lang === 'ar' ? product.name_ar : product.name_fr;
+    const name = getProductName(product);
     const msg = encodeURIComponent(
       `🎂 مرحبا، أريد طلب: ${name}\nالسعر: ${product.price} DA`
     );
@@ -49,7 +91,7 @@ export default function ProductsSection() {
 
         {loading && (
           <div className="products-loading">
-            {[1,2,3].map(i => (
+            {[1, 2, 3].map(i => (
               <div key={i} className="product-skeleton">
                 <div className="skeleton skeleton-img"></div>
                 <div className="skeleton skeleton-text"></div>
@@ -60,14 +102,7 @@ export default function ProductsSection() {
           </div>
         )}
 
-        {error && (
-          <div className="products-error">
-            <span>⚠️</span>
-            <p>{t('products.error') || 'Impossible de charger les produits. Vérifiez que le serveur est démarré.'}</p>
-          </div>
-        )}
-
-        {!loading && !error && (
+        {!loading && (
           <div className="products-grid">
             {products.map(product => (
               <div key={product.id} className="product-card">
@@ -75,7 +110,7 @@ export default function ProductsSection() {
                   {product.image_url ? (
                     <img
                       src={product.image_url}
-                      alt={lang === 'ar' ? product.name_ar : product.name_fr}
+                      alt={getProductName(product)}
                       loading="lazy"
                     />
                   ) : (
@@ -89,14 +124,8 @@ export default function ProductsSection() {
                 </div>
 
                 <div className="product-info">
-                  <h3 className="product-name">
-                    {lang === 'ar' ? product.name_ar : product.name_fr}
-                  </h3>
-                  {product.description_fr && (
-                    <p className="product-desc">
-                      {lang === 'ar' ? product.description_ar : product.description_fr}
-                    </p>
-                  )}
+                  <h3 className="product-name">{getProductName(product)}</h3>
+                  <p className="product-desc">{getProductDesc(product)}</p>
                   <div className="product-price">
                     {product.price?.toLocaleString()} <span>DA</span>
                   </div>
