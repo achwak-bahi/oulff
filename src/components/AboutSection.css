@@ -160,8 +160,30 @@
   white-space: nowrap;
 }
 
-/* ── Responsive ── */
+/* ── Tablet: ضيّق الـ gap لكن ابق جنب بعض ── */
 @media (max-width: 768px) {
+  .about__container {
+    gap: clamp(1rem, 4vw, 2rem);
+    padding: 0 1rem;
+  }
+  .about__img-frame img {
+    height: 260px;
+  }
+  .about__stats-card {
+    right: 0.25rem;
+    bottom: -1rem;
+    padding: 0.75rem 1rem;
+    gap: 0.6rem;
+  }
+  .about__stat-n { font-size: 1.1rem; }
+  .about__stat { font-size: 0.68rem; }
+  .about__title { font-size: clamp(1.3rem, 4vw, 1.8rem); }
+  .about__p { font-size: 0.88rem; }
+  .about__content { gap: 0.75rem; }
+}
+
+/* ── Mobile صغير جداً: عمود واحد ── */
+@media (max-width: 480px) {
   .about__container {
     grid-template-columns: 1fr;
   }
@@ -170,7 +192,7 @@
     bottom: -1rem;
   }
   .about__img-frame img {
-    height: 300px;
+    height: 220px;
   }
   .about__visual {
     margin-bottom: 2rem;
