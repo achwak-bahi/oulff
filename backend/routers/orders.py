@@ -44,7 +44,7 @@ def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
 @router.get("/", response_model=List[schemas.OrderOut])
 def get_orders(
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     """Lister toutes les commandes (admin)"""
     return db.query(models.Order).order_by(models.Order.created_at.desc()).all()
@@ -54,7 +54,7 @@ def get_orders(
 def get_order(
     order_id: int,
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     order = db.query(models.Order).filter(models.Order.id == order_id).first()
     if not order:
@@ -67,7 +67,7 @@ def update_order_status(
     order_id: int,
     status: str,
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     """Mettre à jour le statut d'une commande (admin)"""
     order = db.query(models.Order).filter(models.Order.id == order_id).first()

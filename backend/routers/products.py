@@ -16,7 +16,7 @@ def get_products(db: Session = Depends(get_db)):
 
 
 @router.get("/all", response_model=List[schemas.ProductOut])
-def get_all_products(db: Session = Depends(get_db), _: models.Admin = Depends(get_current_admin)):
+def get_all_products(db: Session = Depends(get_db), _: dict = Depends(get_current_admin)):
     """Récupérer tous les produits (admin uniquement)"""
     return db.query(models.Product).all()
 
@@ -33,7 +33,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 def create_product(
     product: schemas.ProductCreate,
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     """Créer un nouveau produit (admin)"""
     db_product = models.Product(**product.model_dump())
@@ -48,7 +48,7 @@ def update_product(
     product_id: int,
     product: schemas.ProductUpdate,
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     """Modifier un produit (admin)"""
     db_product = db.query(models.Product).filter(models.Product.id == product_id).first()
@@ -65,7 +65,7 @@ def update_product(
 def delete_product(
     product_id: int,
     db: Session = Depends(get_db),
-    _: models.Admin = Depends(get_current_admin)
+    _: dict = Depends(get_current_admin)
 ):
     """Supprimer un produit (admin)"""
     db_product = db.query(models.Product).filter(models.Product.id == product_id).first()
